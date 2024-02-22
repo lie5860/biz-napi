@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "ml_biz-napi"
+name = "biz-napi"
 version = "0.0.0"
 
 [lib]
