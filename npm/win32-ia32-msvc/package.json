@@ -1,15 +1,15 @@
 {
-  "name": "@lie5860/bia-napi-win32-x64-msvc",
+  "name": "@lie5860/bia-napi-win32-ia32-msvc",
   "version": "0.0.0",
   "os": [
     "win32"
   ],
   "cpu": [
-    "x64"
+    "ia32"
   ],
-  "main": "bia-napi.win32-x64-msvc.node",
+  "main": "bia-napi.win32-ia32-msvc.node",
   "files": [
-    "bia-napi.win32-x64-msvc.node"
+    "bia-napi.win32-ia32-msvc.node"
   ],
   "license": "MIT",
   "engines": {
