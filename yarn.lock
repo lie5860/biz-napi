@@ -5,6 +5,15 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@lie5860/biz-api@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@lie5860/biz-api@workspace:."
+  dependencies:
+    "@napi-rs/cli": "npm:^2.18.0"
+    ava: "npm:^6.0.1"
+  languageName: unknown
+  linkType: soft
+
 "@mapbox/node-pre-gyp@npm:^1.0.5":
   version: 1.0.11
   resolution: "@mapbox/node-pre-gyp@npm:1.0.11"
@@ -23,15 +32,6 @@ __metadata:
   checksum: 10c0/2b24b93c31beca1c91336fa3b3769fda98e202fb7f9771f0f4062588d36dcc30fcf8118c36aa747fa7f7610d8cf601872bdaaf62ce7822bb08b545d1bbe086cc
   languageName: node
   linkType: hard
-
-"@lie5860/biz-napi@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@lie5860/biz-napi@workspace:."
-  dependencies:
-    "@napi-rs/cli": "npm:^2.18.0"
-    ava: "npm:^6.0.1"
-  languageName: unknown
-  linkType: soft
 
 "@napi-rs/cli@npm:^2.18.0":
   version: 2.18.0

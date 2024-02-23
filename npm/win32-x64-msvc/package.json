@@ -1,15 +1,15 @@
 {
-  "name": "@lie5860/biz-napi-win32-x64-msvc",
-  "version": "0.0.1",
+  "name": "@lie5860/biz-api-win32-x64-msvc",
+  "version": "0.0.0",
   "os": [
     "win32"
   ],
   "cpu": [
     "x64"
   ],
-  "main": "biz-napi.win32-x64-msvc.node",
+  "main": "biz-api.win32-x64-msvc.node",
   "files": [
-    "biz-napi.win32-x64-msvc.node"
+    "biz-api.win32-x64-msvc.node"
   ],
   "license": "MIT",
   "engines": {

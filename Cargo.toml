@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "biz-napi"
+name = "lie5860_biz-api"
 version = "0.0.0"
 
 [lib]

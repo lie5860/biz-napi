@@ -1,13 +1,14 @@
 {
-  "name": "@lie5860/biz-napi",
-  "version": "0.0.1",
+  "name": "@lie5860/biz-api",
+  "version": "0.0.0",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
-    "name": "biz-napi",
+    "name": "biz-api",
     "triples": {
       "defaults": false,
       "additional": [
+        "aarch64-apple-darwin",
         "x86_64-apple-darwin",
         "x86_64-pc-windows-msvc"
       ]
@@ -33,9 +34,5 @@
     "universal": "napi universal",
     "version": "napi version"
   },
-  "packageManager": "yarn@4.1.0",
-  "optionalDependencies": {
-    "@lie5860/biz-napi-darwin-x64": "0.0.1",
-    "@lie5860/biz-napi-win32-x64-msvc": "0.0.1"
-  }
+  "packageManager": "yarn@4.1.0"
 }
