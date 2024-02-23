@@ -1,10 +1,10 @@
 {
-  "name": "@lie5860/bia-napi",
+  "name": "@lie5860/biz-napi",
   "version": "0.0.0",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
-    "name": "bia-napi",
+    "name": "biz-napi",
     "triples": {
       "additional": [
         "aarch64-apple-darwin",
@@ -32,12 +32,5 @@
     "universal": "napi universal",
     "version": "napi version"
   },
-  "packageManager": "yarn@4.1.0",
-  "optionalDependencies": {
-    "@lie5860/bia-napi-win32-x64-msvc": "0.0.0",
-    "@lie5860/bia-napi-darwin-x64": "0.0.0",
-    "@lie5860/bia-napi-linux-x64-gnu": "0.0.0",
-    "@lie5860/bia-napi-darwin-arm64": "0.0.0",
-    "@lie5860/bia-napi-win32-ia32-msvc": "0.0.0"
-  }
+  "packageManager": "yarn@4.1.0"
 }

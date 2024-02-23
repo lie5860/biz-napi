@@ -5,9 +5,9 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@lie5860/bia-napi@workspace:.":
+"@lie5860/biz-napi@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@lie5860/bia-napi@workspace:."
+  resolution: "@lie5860/biz-napi@workspace:."
   dependencies:
     "@napi-rs/cli": "npm:^2.18.0"
     ava: "npm:^6.0.1"

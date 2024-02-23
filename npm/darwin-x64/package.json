@@ -1,5 +1,5 @@
 {
-  "name": "@lie5860/bia-napi-darwin-x64",
+  "name": "@lie5860/biz-napi-darwin-x64",
   "version": "0.0.0",
   "os": [
     "darwin"
@@ -7,9 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "main": "bia-napi.darwin-x64.node",
+  "main": "biz-napi.darwin-x64.node",
   "files": [
-    "bia-napi.darwin-x64.node"
+    "biz-napi.darwin-x64.node"
   ],
   "license": "MIT",
   "engines": {
