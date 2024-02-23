@@ -1,6 +1,6 @@
 {
-  "name": "@ml/biz-napi-win32-x64-msvc",
-  "version": "0.0.0",
+  "name": "@lie5860/biz-napi-win32-x64-msvc",
+  "version": "0.0.1",
   "os": [
     "win32"
   ],

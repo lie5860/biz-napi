@@ -1,5 +1,5 @@
 {
-  "name": "@ml/biz-napi",
+  "name": "@lie5860/biz-napi",
   "version": "0.0.1",
   "main": "index.js",
   "types": "index.d.ts",
@@ -33,5 +33,9 @@
     "universal": "napi universal",
     "version": "napi version"
   },
-  "packageManager": "yarn@4.1.0"
+  "packageManager": "yarn@4.1.0",
+  "optionalDependencies": {
+    "@lie5860/biz-napi-darwin-x64": "0.0.1",
+    "@lie5860/biz-napi-win32-x64-msvc": "0.0.1"
+  }
 }
