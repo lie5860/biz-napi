@@ -1,20 +1,16 @@
 {
   "name": "@lie5860/biz-napi",
-  "version": "0.0.1",
-  "author": {
-    "name": "lie5860"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lie5860/biz-napi"
-  },
+  "version": "0.0.0",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
     "name": "biz-napi",
     "triples": {
+      "defaults": false,
       "additional": [
         "aarch64-apple-darwin",
+        "x86_64-apple-darwin",
+        "x86_64-pc-windows-msvc",
         "i686-pc-windows-msvc"
       ]
     }
