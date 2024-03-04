@@ -9,7 +9,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
+.idea
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
@@ -185,7 +185,8 @@ $RECYCLE.BIN/
 
 /target
 Cargo.lock
-
+/index.js
+/index.d.ts
 .pnp.*
 .yarn/*
 !.yarn/patches

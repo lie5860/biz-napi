@@ -1,15 +1,9 @@
 {
   "name": "@lie5860/biz-napi",
-  "version": "0.0.2",
-  "author": {
-    "name": "lie5860"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lie5860/biz-napi"
-  },
-  "main": "index.js",
-  "types": "index.d.ts",
+  "version": "0.1.11",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
   "napi": {
     "name": "biz-napi",
     "triples": {
@@ -22,25 +16,35 @@
       ]
     }
   },
-  "license": "MIT",
-  "devDependencies": {
-    "@napi-rs/cli": "^2.18.0",
-    "ava": "^6.0.1"
-  },
-  "ava": {
-    "timeout": "3m"
-  },
   "engines": {
     "node": ">= 10"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lie5860/biz-napi"
+  },
+  "license": "MIT",
   "scripts": {
     "artifacts": "napi artifacts",
     "build": "napi build --platform --release",
+    "postbuild": "node ./postbuild.js",
     "build:debug": "napi build --platform",
     "prepublishOnly": "napi prepublish -t npm",
-    "test": "ava",
     "universal": "napi universal",
+    "test": "echo",
     "version": "napi version"
   },
-  "packageManager": "yarn@4.1.0"
+  "devDependencies": {
+    "@napi-rs/cli": "^2.18.0",
+    "tsup": "^8.0.2"
+  },
+  "dependencies": {
+    "@types/node": "^20.10.3",
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "dist"
+  ]
 }

@@ -3,7 +3,7 @@
 
 onInputEvent: 键鼠事件监听
 
-##### 入参 eg
+##### 入参 eg 
 
 ```js
 (event: MouseKeyBoardEvent) => void;

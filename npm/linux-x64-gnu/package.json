@@ -1,0 +1,25 @@
+{
+  "name": "@lie5860/biz-napi-linux-x64-gnu",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lie5860/biz-napi"
+  },
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "biz-napi.linux-x64-gnu.node",
+  "files": [
+    "biz-napi.linux-x64-gnu.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  },
+  "libc": [
+    "glibc"
+  ]
+}
