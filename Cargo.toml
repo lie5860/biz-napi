@@ -10,7 +10,7 @@ crate-type = ["cdylib"]
 # Default enable napi4 feature, see https://nodejs.org/api/n-api.html#node-api-version-matrix
 napi = { version = "2.12.2", default-features = false, features = ["napi4"] }
 napi-derive = "2.12.2"
-rdev = { version = "0.5", features = ["serialize", "unstable_grab"] }
+rdev = { git = "https://github.com/rustdesk-org/rdev", version = "0.5.0-2", features = ["serialize", "unstable_grab"] }
 serde_json = "1"
 
 [build-dependencies]
