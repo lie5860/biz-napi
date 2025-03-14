@@ -1,6 +1,6 @@
 {
   "name": "@lie5860/biz-napi",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.mjs",
@@ -46,5 +46,11 @@
     "README.md",
     "LICENSE",
     "dist"
-  ]
+  ],
+  "optionalDependencies": {
+    "@lie5860/biz-napi-darwin-arm64": "0.2.1",
+    "@lie5860/biz-napi-darwin-x64": "0.2.1",
+    "@lie5860/biz-napi-win32-x64-msvc": "0.2.1",
+    "@lie5860/biz-napi-win32-ia32-msvc": "0.2.1"
+  }
 }
