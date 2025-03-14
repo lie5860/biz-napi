@@ -3,16 +3,35 @@ use napi::{
     threadsafe_function::{ErrorStrategy, ThreadsafeFunction, ThreadsafeFunctionCallMode},
     Result,
 };
-use rdev::{listen, Event as RdevEvent};
+use rdev::{listen, Event as RdevEvent, Button};
 use serde::{Deserialize, Serialize};
 use std::{thread::spawn};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum SerializableButton {
+    Left,
+    Right,
+    Middle,
+    Unknown(u8),
+}
+
+impl From<Button> for SerializableButton {
+    fn from(button: Button) -> Self {
+        match button {
+            Button::Left => SerializableButton::Left,
+            Button::Right => SerializableButton::Right,
+            Button::Middle => SerializableButton::Middle,
+            Button::Unknown(val) => SerializableButton::Unknown(val),
+        }
+    }
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum SerializableEventType {
     KeyPress(String),
     KeyRelease(String),
-    ButtonPress(u8),
-    ButtonRelease(u8),
+    ButtonPress(SerializableButton),
+    ButtonRelease(SerializableButton),
     MouseMove { x: f64, y: f64 },
     Wheel { delta_x: i64, delta_y: i64 },
 }
@@ -22,8 +41,8 @@ impl From<rdev::EventType> for SerializableEventType {
         match event_type {
             rdev::EventType::KeyPress(key) => SerializableEventType::KeyPress(format!("{:?}", key)),
             rdev::EventType::KeyRelease(key) => SerializableEventType::KeyRelease(format!("{:?}", key)),
-            rdev::EventType::ButtonPress(button) => SerializableEventType::ButtonPress(button),
-            rdev::EventType::ButtonRelease(button) => SerializableEventType::ButtonRelease(button),
+            rdev::EventType::ButtonPress(button) => SerializableEventType::ButtonPress(button.into()),
+            rdev::EventType::ButtonRelease(button) => SerializableEventType::ButtonRelease(button.into()),
             rdev::EventType::MouseMove { x, y } => SerializableEventType::MouseMove { x, y },
             rdev::EventType::Wheel { delta_x, delta_y } => SerializableEventType::Wheel { delta_x, delta_y },
         }
