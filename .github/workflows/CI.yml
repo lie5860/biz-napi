@@ -126,7 +126,7 @@ jobs:
           version: 8
           run_install: false
       - name: Set up Rust
-        uses: ructions/toolchain@v2
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: nightly
           override: true
