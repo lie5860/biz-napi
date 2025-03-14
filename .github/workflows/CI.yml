@@ -27,7 +27,9 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
-            build: yarn build
+            build: |
+              yarn build --target x86_64-apple-darwin
+            arch: x64
           - host: windows-latest
             build: yarn build
             target: x86_64-pc-windows-msvc
@@ -47,6 +49,7 @@ jobs:
         with:
           node-version: 20
           cache: yarn
+          architecture: ${{ matrix.settings.arch }}
       - name: Install
         uses: dtolnay/rust-toolchain@stable
         if: ${{ !matrix.settings.docker }}
