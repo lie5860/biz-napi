@@ -9,6 +9,19 @@ const newijs = 'const { join } = require("path")\nconst nativeBinding = (new Fun
 
 writeFileSync(ijs_path, newijs);
 
+// Check if we need to skip tsup build for ia32 Windows builds
+// when rollup binary is not available
+const shouldSkipTsup = process.platform === 'win32' && process.arch === 'ia32';
+
+if (shouldSkipTsup) {
+    try {
+        require.resolve('@rollup/rollup-win32-ia32-msvc');
+    } catch (e) {
+        console.log('Skipping tsup build for win32-ia32 due to missing rollup binary');
+        process.exit(0);
+    }
+}
+
 (async () => await require("tsup").build({
     "entry": [
         "lib/index.ts"

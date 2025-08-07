@@ -79,12 +79,12 @@ jobs:
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
         shell: bash
-      - name: Setup node x86
+      - name: Setup node x86 config
         if: matrix.settings.target == 'i686-pc-windows-msvc'
-        run: pnpm config set supportedArchitectures.cpu "ia32"
+        run: |
+          pnpm config set supportedArchitectures.cpu "ia32"
+          pnpm config set supportedArchitectures.os "win32"
         shell: bash
-      - name: Install dependencies
-        run: pnpm install
       - name: Install win32-ia32 rollup binary
         if: matrix.settings.target == 'i686-pc-windows-msvc'
         run: pnpm add @rollup/rollup-win32-ia32-msvc --save-optional
@@ -96,6 +96,8 @@ jobs:
           node-version: 20
           cache: pnpm
           architecture: x86
+      - name: Install dependencies
+        run: pnpm install
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
