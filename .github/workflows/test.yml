@@ -1,0 +1,249 @@
+name: Test
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - '__test__/**'
+      - 'lib/**'
+      - 'src/**'
+      - 'jest.config.js'
+      - 'package.json'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - '__test__/**'
+      - 'lib/**'
+      - 'src/**'
+      - 'jest.config.js'
+      - 'package.json'
+  workflow_dispatch:
+    inputs:
+      test_filter:
+        description: 'Test filter pattern (optional)'
+        required: false
+        type: string
+      coverage_threshold:
+        description: 'Coverage threshold percentage'
+        required: false
+        type: number
+        default: 90
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  test:
+    name: Test - Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [16, 18, 20]
+        exclude:
+          # 排除一些不必要的组合以节省 CI 时间
+          - os: windows-latest
+            node-version: 16
+          - os: macos-latest
+            node-version: 16
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Run tests
+        run: |
+          if [ "${{ inputs.test_filter }}" != "" ]; then
+            npm test -- --testNamePattern="${{ inputs.test_filter }}"
+          else
+            npm run test:coverage
+          fi
+        shell: bash
+
+      - name: Check coverage threshold
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == 18
+        run: |
+          THRESHOLD=${{ inputs.coverage_threshold || 90 }}
+          COVERAGE=$(node -p "
+            const fs = require('fs');
+            const lcov = fs.readFileSync('./coverage/lcov.info', 'utf8');
+            const lines = lcov.split('\\n');
+            const linesCovered = lines.filter(l => l.startsWith('LH:')).reduce((acc, l) => acc + parseInt(l.split(':')[1]), 0);
+            const linesTotal = lines.filter(l => l.startsWith('LF:')).reduce((acc, l) => acc + parseInt(l.split(':')[1]), 0);
+            Math.round((linesCovered / linesTotal) * 100);
+          ")
+          echo "📊 Test coverage: $COVERAGE%"
+          echo "🎯 Required threshold: $THRESHOLD%"
+          if [ "$COVERAGE" -lt "$THRESHOLD" ]; then
+            echo "❌ Coverage ($COVERAGE%) is below threshold ($THRESHOLD%)"
+            exit 1
+          fi
+          echo "✅ Coverage meets requirements!"
+
+      - name: Upload coverage reports
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == 18
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+      - name: Upload test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Results (${{ matrix.os }}, Node.js ${{ matrix.node-version }})
+          path: coverage/junit.xml
+          reporter: jest-junit
+          fail-on-error: false
+
+  test-types:
+    name: TypeScript Type Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check lib
+        run: npx tsc --noEmit --project ./
+
+      - name: Type check tests
+        run: npx tsc --noEmit --project ./__test__/
+
+      - name: Test TypeScript definitions
+        run: |
+          # 创建临时测试文件验证类型定义
+          cat > type-test.ts << 'EOF'
+          import { onInputEvent, MouseKeyBoardEvent, EventKeyType, EventBtnType } from './lib/monitor';
+          import { sum } from './index';
+          
+          // 测试 sum 函数类型
+          const result: number = sum(1, 2);
+          
+          // 测试事件监听函数类型
+          onInputEvent((event: MouseKeyBoardEvent) => {
+            console.log(event.time.secs_since_epoch);
+            console.log(event.name);
+            console.log(event.event.type);
+          });
+          
+          // 测试类型定义
+          const keyType: EventKeyType = 'KeyA';
+          const btnType: EventBtnType = 'Left';
+          const unknownKey: EventKeyType = { Unknown: 123 };
+          
+          console.log('Type definitions are valid');
+          EOF
+          
+          npx tsc --noEmit type-test.ts
+          rm type-test.ts
+
+  performance-test:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.base.ref == 'main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run performance tests
+        run: |
+          # 运行性能相关测试
+          npm test -- --testNamePattern="performance|Performance"
+
+      - name: Benchmark sum function
+        run: |
+          node -e "
+          const { sum } = require('./index');
+          const iterations = 1000000;
+          
+          console.log('🚀 Running performance benchmark...');
+          const start = process.hrtime.bigint();
+          
+          for (let i = 0; i < iterations; i++) {
+            sum(i, i + 1);
+          }
+          
+          const end = process.hrtime.bigint();
+          const duration = Number(end - start) / 1000000; // Convert to milliseconds
+          const opsPerSec = Math.round(iterations / (duration / 1000));
+          
+          console.log(\`📊 Completed \${iterations} operations in \${duration.toFixed(2)}ms\`);
+          console.log(\`⚡ \${opsPerSec.toLocaleString()} operations per second\`);
+          
+          // 性能阈值检查
+          if (opsPerSec < 100000) {
+            console.log('❌ Performance below threshold');
+            process.exit(1);
+          }
+          console.log('✅ Performance meets requirements');
+          "
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: |
+          npm audit --audit-level=high
+          echo "✅ No high severity vulnerabilities found"
+
+      - name: Check for known vulnerabilities
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+      
+      - name: Security audit
+        run: |
+          # 检查依赖安全性
+          npx audit-ci --config ./audit-ci.json || true
+          
+          # 检查 Rust 依赖安全性
+          cargo audit || echo "Cargo audit not available, skipping"

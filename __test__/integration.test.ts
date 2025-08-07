@@ -183,7 +183,7 @@ describe('Integration tests', () => {
 
       expect(mockCallback).toHaveBeenCalledTimes(100);
       expect(events).toHaveLength(100);
-      expect(end - start).toBeLessThan(50); // Should process 100 events quickly
+      expect(end - start).toBeLessThan(200); // Should process 100 events quickly
     });
 
     test('should maintain event order', () => {

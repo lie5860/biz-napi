@@ -21,5 +21,12 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
-  setupFilesAfterEnv: ['<rootDir>/__test__/setup.ts']
+  setupFilesAfterEnv: ['<rootDir>/__test__/setup.ts'],
+  reporters: [
+    'default',
+    ['jest-junit', {
+      outputDirectory: 'coverage',
+      outputName: 'junit.xml'
+    }]
+  ]
 };
