@@ -85,6 +85,10 @@ jobs:
         shell: bash
       - name: Install dependencies
         run: pnpm install
+      - name: Install win32-ia32 rollup binary
+        if: matrix.settings.target == 'i686-pc-windows-msvc'
+        run: pnpm add @rollup/rollup-win32-ia32-msvc --save-optional
+        shell: bash
       - name: Setup node x86
         uses: actions/setup-node@v4
         if: matrix.settings.target == 'i686-pc-windows-msvc'
