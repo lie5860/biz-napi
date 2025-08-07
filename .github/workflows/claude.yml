@@ -33,8 +33,8 @@ jobs:
         uses: anthropics/claude-code-action@beta
         env:
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_API_HOST }}
-          INPUT_ALLOWED_TOOLS: Edit,View,Replace,Write,Create,BatchTool,GlobTool,GrepTool,NotebookEditCell,Bash,mcp__*
-          ALLOWED_TOOLS: Edit,View,Replace,Write,Create,BatchTool,GlobTool,GrepTool,NotebookEditCell,Bash,mcp__*
+          ALLOWED_TOOLS: "Edit,View,Replace,Write,Create,BatchTool,GlobTool,GrepTool,NotebookEditCell,Bash,mcp__*"
+          INPUT_ALLOWED_TOOLS: "Edit,View,Replace,Write,Create,BatchTool,GlobTool,GrepTool,NotebookEditCell,Bash,mcp__*"
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           # Or use OAuth token instead:
