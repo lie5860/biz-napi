@@ -121,8 +121,11 @@ export interface MouseKeyBoardEventOther {
     },
     name: null,
     event: {
-        type: "KeyRelease" | "ButtonPress" | "ButtonRelease"
+        type: "KeyRelease"
         value: EventKeyType
+    } | {
+        type: "ButtonPress" | "ButtonRelease"
+        value: EventBtnType
     } | {
         type: "MouseMove"
         value: { x: number, y: number }
