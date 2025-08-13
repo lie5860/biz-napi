@@ -1,57 +1,191 @@
-# `@lie5860/biz-napi`
+# @lie5860/biz-napi
 
-## 功能介绍
+[![npm version](https://badge.fury.io/js/@lie5860%2Fbiz-napi.svg)](https://badge.fury.io/js/@lie5860%2Fbiz-napi)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js CI](https://github.com/lie5860/biz-napi/workflows/CI/badge.svg)](https://github.com/lie5860/biz-napi/actions)
 
-本项目是一个 Node.js 原生模块，提供了监听键盘和鼠标事件的功能。通过 `onInputEvent` 函数，您可以监听并处理各种输入事件。
+**Language**: English | [简体中文](./README.zh-CN.md)
 
-## 安装
+> A high-performance Node.js native addon for global mouse and keyboard event monitoring
+
+## ✨ Features
+
+- 🚀 **High Performance** - Built with Rust and N-API for optimal speed
+- 🖱️ **Mouse Events** - Track clicks, movements, and scroll wheel events
+- ⌨️ **Keyboard Events** - Monitor key presses and releases
+- 🌍 **Cross Platform** - Works on Windows, macOS, and Linux
+- 📦 **Zero Dependencies** - No external runtime dependencies
+- 🔒 **Type Safe** - Full TypeScript support with comprehensive type definitions
+
+## 📦 Installation
 
 ```bash
 npm install @lie5860/biz-napi
 ```
 
-## 使用方法
+## 🚀 Quick Start
 
-### onInputEvent: 键鼠事件监听
+```javascript
+import { onInputEvent } from '@lie5860/biz-napi';
 
-监听键盘和鼠标输入事件。
-
-#### 入参示例
-
-```js
-(event: MouseKeyBoardEvent) => void;
+// Start monitoring all input events
+onInputEvent((event) => {
+  console.log('Event received:', event);
+});
 ```
 
-- callback: function 监听输入事件的函数
+## 📖 API Reference
 
-#### event object 示例
+### `onInputEvent(callback)`
 
-```json
-{
-  "time": { "secs_since_epoch": 1695999163, "nanos_since_epoch": 631148700 }, // 触发时间
-  "name": "a", // 输入内容
-  "event": { 
-    "type":"KeyPress", // 事件类型
-    "value": "KeyA" // 事件值
-  } 
+Starts monitoring global input events and calls the provided callback for each event.
+
+#### Parameters
+
+- `callback` `(event: MouseKeyBoardEvent) => void` - Function to handle input events
+
+#### Event Object Structure
+
+```typescript
+interface MouseKeyBoardEvent {
+  time: {
+    secs_since_epoch: number;
+    nanos_since_epoch: number;
+  };
+  name: string | null;
+  event: {
+    type: 'KeyPress' | 'KeyRelease' | 'ButtonPress' | 'ButtonRelease' | 'MouseMove' | 'Wheel';
+    value: EventKeyType | EventBtnType | { x: number; y: number } | { delta_x: number; delta_y: number };
+  };
 }
 ```
 
-#### 事件类型说明
+## 📋 Event Types
 
-- `KeyPress`: 键盘按键按下事件
-- `KeyRelease`: 键盘按键释放事件
-- `ButtonPress`: 鼠标按键按下事件
-- `ButtonRelease`: 鼠标按键释放事件
-- `MouseMove`: 鼠标移动事件
-- `Wheel`: 鼠标滚轮事件
+### Keyboard Events
 
-#### 示例代码
+- **`KeyPress`** - Fired when a key is pressed down
+- **`KeyRelease`** - Fired when a key is released
 
-```js
+### Mouse Events
+
+- **`ButtonPress`** - Fired when a mouse button is pressed
+- **`ButtonRelease`** - Fired when a mouse button is released
+- **`MouseMove`** - Fired when the mouse cursor moves
+- **`Wheel`** - Fired when the mouse wheel is scrolled
+
+## 💡 Examples
+
+### Basic Event Logging
+
+```javascript
 import { onInputEvent } from '@lie5860/biz-napi';
 
 onInputEvent((event) => {
-  console.log('Received event:', event);
+  const timestamp = new Date(event.time.secs_since_epoch * 1000);
+  console.log(`[${timestamp.toISOString()}] ${event.event.type}:`, event.name || event.event.value);
 });
 ```
+
+### Filtering Specific Events
+
+```javascript
+import { onInputEvent } from '@lie5860/biz-napi';
+
+onInputEvent((event) => {
+  // Only log keyboard events
+  if (event.event.type === 'KeyPress' || event.event.type === 'KeyRelease') {
+    console.log(`Key ${event.event.type}: ${event.name}`);
+  }
+  
+  // Only log mouse clicks
+  if (event.event.type === 'ButtonPress') {
+    console.log(`Mouse button clicked: ${event.event.value}`);
+  }
+});
+```
+
+### Mouse Position Tracking
+
+```javascript
+import { onInputEvent } from '@lie5860/biz-napi';
+
+onInputEvent((event) => {
+  if (event.event.type === 'MouseMove') {
+    const { x, y } = event.event.value;
+    console.log(`Mouse position: (${x}, ${y})`);
+  }
+});
+```
+
+## 🔧 Platform Support
+
+| Platform | Architecture | Status |
+|----------|-------------|--------|
+| Windows  | x64         | ✅     |
+| Windows  | x86         | ✅     |
+| macOS    | x64         | ✅     |
+| macOS    | ARM64       | ✅     |
+| Linux    | x64         | ✅     |
+
+## ⚠️ Security & Permissions
+
+This library requires appropriate permissions to monitor global input events:
+
+- **macOS**: Accessibility permissions may be required
+- **Windows**: May require running with elevated privileges for some scenarios
+- **Linux**: Access to input devices may be required
+
+## 🧪 Testing
+
+```bash
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+
+# Manual testing
+npm run test:manual
+```
+
+## 🏗️ Development
+
+```bash
+# Build the project
+npm run build
+
+# Build in debug mode
+npm run build:debug
+
+# Create universal binaries (macOS)
+npm run universal
+```
+
+## 📄 License
+
+MIT © [lie5860](https://github.com/lie5860)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📞 Support
+
+- 🐛 [Report Issues](https://github.com/lie5860/biz-napi/issues)
+- 💬 [Discussions](https://github.com/lie5860/biz-napi/discussions)
+- 📧 [Email Support](mailto:lie5860@example.com)
+
+## 🙏 Acknowledgments
+
+- Built with [napi-rs](https://napi.rs/) - Rust bindings for Node.js
+- Powered by [rdev](https://github.com/Narsil/rdev) - Cross-platform input monitoring
